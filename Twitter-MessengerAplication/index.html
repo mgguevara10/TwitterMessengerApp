@@ -2,20 +2,36 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <title></title>
+    <link href="Content/bootstrap.min.css" rel="stylesheet" />
+    <link href="StyleSheet1.css" rel="stylesheet" />
 </head>
-<body>
-    <div>
-    <input class="form-control" id="userName" type="text" placeholder="USERNAME" />
-</div>
-<div>
+<body class="well">
+    <input type="text" id="nameInput" placeholder="" />
+    <textarea id="biography" placeholder="Bio"></textarea>
+    <input type="text" id="pictureUrl" placeholder="" />
+    <input type="text" id="personalUrl" placeholder="" />
+    <button type="button" id="createProfile" onclick="myTwitter.AddProfile()">Create Profile</button>
+    <br />
 
-    <textarea class="form-control" id="text" placeholder="MESSAGE"></textarea>
-    <span class="btn btn-danger glyphicon glyphicon-flash" onclick="myApp.createMessage
-    <input class="btn btn-info" type="button" value="Save Profile" />
-</div>
-<div id="displayMessages">
-</div>
+    <textarea id="message" placeholder="Tweet something"></textarea>
+    <button class="btn btn-primary" onclick="myTwitter.sendTweet()">Tweet</button>
 
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <td>Name</td>
+                <td>Biography</td>
+                <td>Edit</td>
+                <td>Delete</td>
+            </tr>
+        </thead>
+        <tbody id="tbody">
 
+        </tbody>
+    </table>
+
+    <script src="Scripts/jquery-1.9.0.min.js"></script>
+    <script src="Scripts/bootstrap.min.js"></script>
+    <script src="JavaScript1.js"></script>
 </body>
 </html>
