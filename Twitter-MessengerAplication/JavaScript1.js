@@ -3,26 +3,14 @@
 var myTwitter = {};
 
 //base url
-myTwitter.db = "https://messengermg.firebaseio.com/";
+myTwitter.db = "https://tuita.firebaseio.com/";
 
-//variable that stores our information
-myTwitter.myProfile;
 
 //holds tweets for sorting
 myTwitter.tweets = [];
 
 //holds list of our friends
 myTwitter.Friends = [];
-
-//Profile Constructor -----------########### Going to Delete
-myTwitter.Profile = function (name, biography, pictureUrl, personUrl) {
-    this.userName           = name;
-    this.Tweets             = [];
-    this.Friends            = [];
-    this.biography          = biography;
-    this.pictureUrl         = pictureUrl;
-    this.personalUrl        = personalUrl;
-};
 
 //Tweets Constructor
 myTwitter.Tweets = function (message) {
@@ -58,6 +46,7 @@ myTwitter.Ajax = function (method, url, callback, async, data) {
 
     request.onload = function () {
         if (this.status >= 200 && this.status < 400) {
+
             var response = JSON.parse(this.response);
             if(callback){callback(response);}
         } else {
@@ -78,35 +67,10 @@ myTwitter.Ajax = function (method, url, callback, async, data) {
 
 //------------------------------------------------Profile Crud---------------------------Im not 100% sure we need this, I think we Only need the Update 
 
-//Create Profile   ----- ############ Going to Delete
-myTwitter.AddProfile = function () {
-    //grab elements
-    var name        = document.getElementById("nameInput");
-    var biography   = document.getElementById("biography");
-    var pictureUrl  = document.getElementById("pictureUrl");
-    var personalUrl = document.getElementById("personalUrl");
-
-    var profile = new myTwitter.Profile(name.value, biography.value, pictureUrl.value, personalUrl.value);
-    
-    profile = JSON.stringify(profile);
-    myTwitter.myProfile = profile;
-
-    var url = myTwitter.urlMaker(myTwitter.db, []);
-
-    //postin profile to the database with no callback
-    myTwitter.Ajax("POST",url , null, true, profile);
-
-    name.value          = " ";
-    biography.value     = " ";
-    pictureUrl.value    = " ";
-    personalUrl.value   = " ";
-
-};
-
 //Read  -- "GET"
 myTwitter.GetProfile = function (profileUrl) {
     var url;
-    console.log(url);
+
     if (profileUrl) {
         url = myTwitter.urlMaker(profileUrl, ["Profile"]);
     } else {
@@ -121,16 +85,23 @@ myTwitter.GetProfile = function (profileUrl) {
 
         // Callback used in the Get Profile method.  After we get the data we want to display it. this method outlines the how that data will be displayed
 myTwitter.DisplayProfile = function (data) {
-    var userName = document.getElementById("userName");
+    var userName  = document.getElementById("userName");
+    var biography = document.getElementById("bio");
+    var picture = document.getElementById("picture");
+    //data { name: "Andre", biography: "student ..............
+
     //TODO finish this method to add all profile information to page
-    userName.innerText = data.userName;
+    userName.innerText  = data.userName;
+    biography.innerText = data.biography;
+    picture.setAttribute("src", data.pictureUrl);
+
 };
 
 //Update -- Profile
-myTwitter.UpdateProfile = function () { };
+myTwitter.UpdateProfile = function () {
+    
+};
 
-//Delete -- Profile //may not need
-myTwitter.DeleteProfile = function () { };
 
 //--------------------------------------------------Tweet Crud------------------------------
 //Create
@@ -139,47 +110,114 @@ myTwitter.sendTweet = function () {
     //TODO add the tweets to the tweets array
     var message = document.getElementById("message");
     
-    var tweet = new myTwitter.Tweets(message.value);
+    myTwitter.Lasttweet = new myTwitter.Tweets(message.value);
     
-    tweet = JSON.stringify(tweet);
+    var tweet = JSON.stringify(myTwitter.Lasttweet);
 
-    var url = myTwitter.urlMaker(myTwitter.db, ["/Tweets/"]);
+    var url = myTwitter.urlMaker(myTwitter.db, ["/Profile/Tweets/"]);
 
+    //firebase.com/Tweets/(tweetKey)/
     //Change this to have a callback that places the key or a tweet in the tweets array.
-    myTwitter.Ajax("POST", url, null, true, tweet);
+    myTwitter.Ajax("POST", url, myTwitter.addTweetKey, true, tweet);
+
+    myTwitter.RedrawTweets();
 
     message.value = " ";
 };
 
+myTwitter.addTweetKey = function (data) {
+    myTwitter.Lasttweet.key = data;
+
+    myTwitter.tweets.push(myTwitter.Lasttweet);
+
+    myTwitter.Lasttweet = null;
+};
+
 //Read  --gets all of my tweets \ for now 
 myTwitter.GetTweets = function () {
-    var url = myTwitter.urlMaker(myTwitter.db, ["/Tweets/"]);
+    var url = myTwitter.urlMaker(myTwitter.db, ["Profile/Tweets/"]);
 
     //all friends tweets we need to do a for loop. 
     // for ever friend our Friends array we need to pass
     //Their url into the urlMaker function and do a get request
     // and store the tweet in our tweets array.
 
-    myTwitter.Ajax("GET", url, myTwitter.DisplayTweets, true, null);
+    myTwitter.Ajax("GET", url, myTwitter.fillTweetsArray, true, null);
 
 };
 
 
-    //Callback for GetTweets that displays or lists the tweets on the page
-myTwitter.DisplayTweets = function (data) {
-    //TODO take this data and use the properties to display on the page.
+    //Callback for GetTweets adds all tweets to array
+myTwitter.fillTweetsArray = function (data) {
+    
+    
+    for (var x in data) {
+        data[x].key = x;
+        myTwitter.tweets.push(data[x]);
+    }
+
+    myTwitter.RedrawTweets();
+    
 };
 
-//Update
-myTwitter.UpdateTweet = function () {
+myTwitter.RedrawTweets = function () {
+    var tweetsList = document.getElementById("tweets");
+    tweetsList.innerHTML = " ";
+    for (var i = 0; i < myTwitter.tweets.length; i++) {
+        tweetsList.innerHTML += "<li>" + myTwitter.tweets[i].message + '<button class="btn btn-default" onclick="myTwitter.Edit(\'' + myTwitter.tweets[i].key + '\')">Edit</button><button class="btn btn-danger" onclick="myTwitter.DeleteTweet(\'' + myTwitter.tweets[i].key + '\')">Delete</button> </li>';
+    }
+};
 
+//Edit
+myTwitter.EditTweet = function (key) {
+    var message = document.getElementById("message").value;
+    
+    myTwitter.Lasttweet = new myTwitter.Tweets(message);
+
+    var url = myTwitter.urlMaker(myTwitter.db, ["/Profile/Tweets/" + key])
+
+    for (var i = 0; i < myTwitter.tweets.length; i++) {
+        if (myTwitter.tweets[i].key === key) {
+            myTwitter.tweets.splice(i, 1, myTwitter.Lasttweet);
+        }
+    }
+
+    var tweet = JSON.stringify(myTwitter.Lasttweet);
+
+    myTwitter.Ajax("PUT", url, myTwitter.RedrawTweets, true, tweet);
+
+    
 };
 
     //Edit -- in this method we find the object (tweet) we want to update and place it somewhere so that we can make changes. The update method actually makes the Ajax call.
-myTwitter.Edit = function () { };
+myTwitter.Edit = function (key) {
+    var messagebox = document.getElementById("message");
+    var submitChanges = document.getElementById("submitChanges");
+
+    for (var i = 0; i < myTwitter.tweets.length; i++) {
+        if (myTwitter.tweets[i].key === key) {
+            messagebox.value = myTwitter.tweets[i].message;
+        }
+    }
+
+    submitChanges.setAttribute("onclick","myTwitter.EditTweet(\'"+key+"\')");
+};
 
 //Delete Tweet
-myTwitter.DeleteTweet = function () { };
+myTwitter.DeleteTweet = function (key) { 
+    var url = myTwitter.urlMaker(myTwitter.db, ["/Profile/Tweets/" + key]);
+
+    myTwitter.Ajax("DELETE", url, null, true, null);
+
+    for (var i = 0; i < myTwitter.tweets.length; i++) {
+        if(myTwitter.tweets[i].key === key){
+            myTwitter.tweets.splice(i,1);
+        }
+    }
+
+    myTwitter.RedrawTweets();
+};
+
 
 //Sort the Tweet by time
 myTwitter.SortTweet = function () { };
@@ -194,11 +232,9 @@ myTwitter.followFriend = function () {
     var friend = document.getElementById("FriendUrl");
 
     var nowFollowing = new myTwitter.Friend(friend.value);
-    var url = myTwitter.urlMaker(myTwitter.db, ["/Friends/"]);
+    var url = myTwitter.urlMaker(myTwitter.db, ["/Profile/Friends/"]);
 
     nowFollowing = JSON.stringify(nowFollowing);
-
-    
 
     myTwitter.Ajax("POST", url, myTwitter.redrawFriends, true, nowFollowing);
 
@@ -233,4 +269,4 @@ myTwitter.SortFriends = function (friends) { };
 //Update 
 
 myTwitter.GetProfile(null);
-
+myTwitter.GetTweets();
