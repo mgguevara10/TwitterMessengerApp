@@ -5,30 +5,85 @@
     <link href="Content/bootstrap.min.css" rel="stylesheet" />
     <link href="StyleSheet1.css" rel="stylesheet" />
 </head>
-<body class="well">
-    <input type="text" id="nameInput" placeholder="" />
-    <textarea id="biography" placeholder="Bio"></textarea>
-    <input type="text" id="pictureUrl" placeholder="" />
-    <input type="text" id="personalUrl" placeholder="" />
-    <button type="button" id="createProfile" onclick="myTwitter.AddProfile()">Create Profile</button>
-    <br />
+<body>
+    <!--
+        <div class="container">
+        <section>
+            <input type="text" id="nameInput" placeholder="" />
+            <textarea id="biography" placeholder="Bio"></textarea>
+            <input type="text" id="pictureUrl" placeholder="picture url" />
+            <input type="text" id="personalUrl" placeholder="personal url" />
+            <button type="button" id="createProfile" onclick="myTwitter.AddProfile()">Create Profile</button>
+        </section>
 
-    <textarea id="message" placeholder="Tweet something"></textarea>
-    <button class="btn btn-primary" onclick="myTwitter.sendTweet()">Tweet</button>
+        <section>
+            <textarea id="message" placeholder="Tweet something"></textarea>
+            <button class="btn btn-primary" onclick="myTwitter.sendTweet()">Tweet</button>
+        </section>
+    </div>
+    -->
+    <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+        <div class="container">
+            <a class="navbar-brand" href="#">Twitter Hack</a>
+            <form class="navbar-form navbar-left" role="search">
+                <div class="form-group">
+                    <input id="FriendUrl" type="text" class="form-control" placeholder="Add A friend">
+                </div>
+                <button type="button" class="btn btn-default" onclick="myTwitter.followFriend()">Add New Friend</button><!--   Here the person will be able to add friend urls and follow them-->
+            </form>
+        </div>
+    </nav>
+    
+    <section class="container">
+        <div class="row">
+            <section class="col-md-12">
+                <div class="col-md-3">
+                    <h1 id="userName">Profile Name</h1>
+                    <img height="200px" width="150px" src="http://www.clker.com/cliparts/F/S/w/Q/k/K/head-profile-silhouette-male-hi.png" />
+                </div>
+                <div class="col-md-9">
+                    <p>
+                        \\Biography
+                    </p>
+                </div>
+            </section>
 
-    <table class="table table-striped">
-        <thead>
-            <tr>
-                <td>Name</td>
-                <td>Biography</td>
-                <td>Edit</td>
-                <td>Delete</td>
-            </tr>
-        </thead>
-        <tbody id="tbody">
+            <section>
+                <div class="col-md-4">
+                    <textarea class="form-control" rows="3"></textarea>
+                    <button type="button" class="btn btn-primary">Tweet</button>
+                </div>
+                <div class="col-md-3">
+                    <h3>Tweets</h3>
+                    <ul>
+                        <li>First tweet</li>
+                        <li>Second tweet</li>
+                        <li>First tweet</li>
+                        <li>Second tweet</li>
+                        <li>First tweet</li>
+                        <li>First tweet</li>
+                        <li>Second tweet</li>
+                        <li>Second tweet</li>
+                    </ul>
+                </div>
+                <div class="col-md-3">
+                    <h3>Friends</h3>
+                    <ul>
+                        <li>First tweet</li>
+                        <li>Second tweet</li>
+                        <li>First tweet</li>
+                        <li>Second tweet</li>
+                        <li>First tweet</li>
+                        <li>First tweet</li>
+                        <li>Second tweet</li>
+                        <li>Second tweet</li>
+                    </ul>
+                </div>
+            </section>
 
-        </tbody>
-    </table>
+            
+        </div>
+    </section>
 
     <script src="Scripts/jquery-1.9.0.min.js"></script>
     <script src="Scripts/bootstrap.min.js"></script>
