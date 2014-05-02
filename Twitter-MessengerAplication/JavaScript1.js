@@ -3,7 +3,7 @@
 var myTwitter = {};
 
 //base url
-myTwitter.db = "https://tuita.firebaseio.com/";
+myTwitter.db = "https://messengermg.firebaseio.com/";
 
 //variable that stores our information
 myTwitter.myProfile;
