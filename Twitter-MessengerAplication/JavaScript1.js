@@ -1,5 +1,5 @@
 ﻿"use strict";
-//--------------------------------------------------------Admin-------------------------------
+//--------------------------------------------------------SETUP-------------------------------
 var myTwitter = {};
 
 //base url
@@ -10,6 +10,9 @@ myTwitter.myProfile;
 
 //holds tweets for sorting
 myTwitter.tweets = [];
+
+//holds list of our friends
+myTwitter.Friends = [];
 
 //Profile Constructor
 myTwitter.Profile = function (name, biography, pictureUrl, personUrl) {
@@ -96,10 +99,17 @@ myTwitter.AddProfile = function () {
 };
 
 //Read  -- "GET"
-myTwitter.GetProfile = function () {
-
-    var url = myTwitter.urlMaker(myTwitter.db, ["Profile"]);
+myTwitter.GetProfile = function (profileUrl) {
+    var url;
     console.log(url);
+    if (profileUrl) {
+        url = myTwitter.urlMaker(profileUrl, ["Profile"]);
+    } else {
+        url = myTwitter.urlMaker(myTwitter.db, ["Profile"]);
+    }
+    console.log(url);
+    
+
     myTwitter.Ajax("GET", url, myTwitter.DisplayProfile, true, null);
 
 };
@@ -135,26 +145,41 @@ myTwitter.sendTweet = function () {
     message.value = " ";
 };
 
-//Read
+//Read  --gets all of my tweets \ for now 
 myTwitter.GetTweets = function () {
     var url = myTwitter.urlMaker(myTwitter.db, ["/Tweets/"]);
+
+    //all friends tweets we need to do a for loop. 
+    // for ever friend our Friends array we need to pass
+    //Their url into the urlMaker function and do a get request
+    // and store the tweet in our tweets array.
 
     myTwitter.Ajax("GET", url, myTwitter.DisplayTweets, true, null);
 
 };
 
-    //Callback for GetTweets that displays the tweets on the page
+
+    //Callback for GetTweets that displays or lists the tweets on the page
 myTwitter.DisplayTweets = function (data) {
     //TODO take this data and use the properties to display on the page.
 };
 
 //Update
-myTwitter.UpdateTweet = function () { };
+myTwitter.UpdateTweet = function () {
+
+};
+
+    //Edit -- in this method we find the object (tweet) we want to update and place it somewhere so that we can make changes. The update method actually makes the Ajax call.
+myTwitter.Edit = function () { };
 
 //Delete Tweet
 myTwitter.DeleteTweet = function () { };
 
+//Sort the Tweet by time
+myTwitter.SortTweet = function () { };
+
 //--------------------------------------------------Friend Crud--------------------------
+
 //Create 
 myTwitter.followFriend = function () {
     //we need to get the url that is entered into the input box in the nav bar
@@ -178,12 +203,21 @@ myTwitter.followFriend = function () {
 myTwitter.GetFriends = function () { };
 
     //Callback for GetFriends that displays the people you follow on the page.
-myTwitter.redrawFriends = function (data) { console.log(data);};
+myTwitter.redrawFriends = function (data) { console.log(data); };
+
+//Read 2 ---- Friends of Friends
+myTwitter.FoF = function () {
+    //for each friend in our friends list we want to read their friendslist and add it to our FoF array
+
+};
 
 //Delete  --- unfollow
 myTwitter.unfollowFriend = function () { };
 
+//Sort the friends array by name
+myTwitter.SortFriends = function (friends) { };
+
 //------------------------------------------------------------------------------------------
 
-myTwitter.GetProfile();
+myTwitter.GetProfile(null);
 
