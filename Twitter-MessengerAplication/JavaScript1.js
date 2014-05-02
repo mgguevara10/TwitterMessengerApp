@@ -14,7 +14,7 @@ myTwitter.tweets = [];
 //holds list of our friends
 myTwitter.Friends = [];
 
-//Profile Constructor
+//Profile Constructor -----------########### Going to Delete
 myTwitter.Profile = function (name, biography, pictureUrl, personUrl) {
     this.userName           = name;
     this.Tweets             = [];
@@ -32,7 +32,7 @@ myTwitter.Tweets = function (message) {
 
 //Friend Constructor
 myTwitter.Friend = function (url) {
-    this.url = url;
+    this.friendUrl = url;
 }
 
 //constructs the url for use in the AJAX calls
@@ -66,14 +66,19 @@ myTwitter.Ajax = function (method, url, callback, async, data) {
     }
 
     request.onerror = function () {
-        console.log("Communication Error");
+        console.log("Communication Error" + this.response);
     }
-    request.send(data);
+    if (data) {
+        request.send(data);
+    } else {
+        request.send();
+    }
+    
 };
 
 //------------------------------------------------Profile Crud---------------------------Im not 100% sure we need this, I think we Only need the Update 
 
-//Create Profile   ----- May not need
+//Create Profile   ----- ############ Going to Delete
 myTwitter.AddProfile = function () {
     //grab elements
     var name        = document.getElementById("nameInput");
@@ -140,6 +145,7 @@ myTwitter.sendTweet = function () {
 
     var url = myTwitter.urlMaker(myTwitter.db, ["/Tweets/"]);
 
+    //Change this to have a callback that places the key or a tweet in the tweets array.
     myTwitter.Ajax("POST", url, null, true, tweet);
 
     message.value = " ";
@@ -207,7 +213,9 @@ myTwitter.redrawFriends = function (data) { console.log(data); };
 
 //Read 2 ---- Friends of Friends
 myTwitter.FoF = function () {
-    //for each friend in our friends list we want to read their friendslist and add it to our FoF array
+    //for each friend in our friends 
+    //list we want to read their friendslist and 
+    //add it to our FoF array
 
 };
 
@@ -218,6 +226,11 @@ myTwitter.unfollowFriend = function () { };
 myTwitter.SortFriends = function (friends) { };
 
 //------------------------------------------------------------------------------------------
+// We also want to Poll for tweets -I think
+
+//Notes during post of tweet POST - push to array - get Id from the response
+//Delete delete then splice out of the array 
+//Update 
 
 myTwitter.GetProfile(null);
 
