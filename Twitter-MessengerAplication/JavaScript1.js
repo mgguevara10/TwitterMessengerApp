@@ -10,7 +10,8 @@ myTwitter.db = "https://tuita.firebaseio.com/";
 myTwitter.tweets = [];
 
 //holds list of our friends
-myTwitter.Friends = [];
+myTwitter.FriendsUrl = [];
+myTwitter.FriendObjects = [];
 
 //Tweets Constructor
 myTwitter.Tweets = function (message) {
@@ -120,8 +121,6 @@ myTwitter.sendTweet = function () {
     //Change this to have a callback that places the key or a tweet in the tweets array.
     myTwitter.Ajax("POST", url, myTwitter.addTweetKey, true, tweet);
 
-    myTwitter.RedrawTweets();
-
     message.value = " ";
 };
 
@@ -131,6 +130,9 @@ myTwitter.addTweetKey = function (data) {
     myTwitter.tweets.push(myTwitter.Lasttweet);
 
     myTwitter.Lasttweet = null;
+
+    myTwitter.RedrawTweets();
+
 };
 
 //Read  --gets all of my tweets \ for now 
@@ -162,9 +164,13 @@ myTwitter.fillTweetsArray = function (data) {
 
 myTwitter.RedrawTweets = function () {
     var tweetsList = document.getElementById("tweets");
+
     tweetsList.innerHTML = " ";
+
     for (var i = 0; i < myTwitter.tweets.length; i++) {
+
         tweetsList.innerHTML += "<li>" + myTwitter.tweets[i].message + '<button class="btn btn-default" onclick="myTwitter.Edit(\'' + myTwitter.tweets[i].key + '\')">Edit</button><button class="btn btn-danger" onclick="myTwitter.DeleteTweet(\'' + myTwitter.tweets[i].key + '\')">Delete</button> </li>';
+
     }
 };
 
@@ -242,10 +248,45 @@ myTwitter.followFriend = function () {
 };
 
 //Read 
-myTwitter.GetFriends = function () { };
+myTwitter.GetFriends = function () {
+    var url = myTwitter.urlMaker(myTwitter.db, ["Profile/Friends/"]);
+
+    myTwitter.Ajax("GET", url, myTwitter.FriendsToArray, true, null);
+};
 
     //Callback for GetFriends that displays the people you follow on the page.
-myTwitter.redrawFriends = function (data) { console.log(data); };
+myTwitter.FriendsToArray = function (data) {
+
+    for (var x in data) {
+        myTwitter.FriendsUrl.push(data[x].friendUrl);
+    }
+
+    myTwitter.GetFriendProfile();
+};
+
+//
+myTwitter.GetFriendProfile = function () {
+    var url;
+    //make urls
+    for (var i = 0; i < myTwitter.FriendsUrl.length; i++) {
+        url = myTwitter.urlMaker(myTwitter.FriendsUrl[i], ["Profile/"]);
+
+        myTwitter.Ajax("GET", url, myTwitter.GetFriendProfileCallBack, true, null);
+    }
+};
+
+//we want to get the friends
+myTwitter.GetFriendProfileCallBack = function(data){
+    myTwitter.FriendObjects.push(data);
+    console.log(myTwitter.FriendObjects);
+};
+
+myTwitter.DrawFriends = function () {
+
+    for (var i in myTwitter.FriendObjects) {
+        console.log(myTwitter.FriendObjects[i].userName);
+    }
+};
 
 //Read 2 ---- Friends of Friends
 myTwitter.FoF = function () {
@@ -256,7 +297,9 @@ myTwitter.FoF = function () {
 };
 
 //Delete  --- unfollow
-myTwitter.unfollowFriend = function () { };
+myTwitter.unfollowFriend = function () {
+    
+};
 
 //Sort the friends array by name
 myTwitter.SortFriends = function (friends) { };
@@ -270,3 +313,5 @@ myTwitter.SortFriends = function (friends) { };
 
 myTwitter.GetProfile(null);
 myTwitter.GetTweets();
+myTwitter.GetFriends();
+
