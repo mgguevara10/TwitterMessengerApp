@@ -125,7 +125,7 @@ myTwitter.sendTweet = function () {
 };
 
 myTwitter.addTweetKey = function (data) {
-    myTwitter.Lasttweet.key = data;
+    myTwitter.Lasttweet.key = data.name;
 
     myTwitter.tweets.push(myTwitter.Lasttweet);
 
@@ -264,7 +264,7 @@ myTwitter.FriendsToArray = function (data) {
     myTwitter.GetFriendProfile();
 };
 
-//
+//Get request to get the profile data from a given url
 myTwitter.GetFriendProfile = function () {
     var url;
     //make urls
@@ -275,12 +275,13 @@ myTwitter.GetFriendProfile = function () {
     }
 };
 
-//we want to get the friends
+//we want to get the friends a friend object into the Friends Objects array
 myTwitter.GetFriendProfileCallBack = function(data){
     myTwitter.FriendObjects.push(data);
     console.log(myTwitter.FriendObjects);
 };
 
+//Display
 myTwitter.DrawFriends = function () {
 
     for (var i in myTwitter.FriendObjects) {
