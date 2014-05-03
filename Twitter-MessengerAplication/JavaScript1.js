@@ -5,7 +5,6 @@ var myTwitter = {};
 //base url
 myTwitter.db = "https://tuita.firebaseio.com/";
 
-
 //holds tweets for sorting
 myTwitter.tweets = [];
 
@@ -73,7 +72,7 @@ myTwitter.GetProfile = function (profileUrl) {
     var url;
 
     if (profileUrl) {
-        url = myTwitter.urlMaker(profileUrl, ["Profile"]);
+        url = myTwitter.urlMaker(profileUrl, ["/Profile"]);
     } else {
         url = myTwitter.urlMaker(myTwitter.db, ["Profile"]);
     }
@@ -164,7 +163,7 @@ myTwitter.fillTweetsArray = function (data) {
 
 myTwitter.RedrawTweets = function () {
     var tweetsList = document.getElementById("tweets");
-
+    myTwitter.Sort();
     tweetsList.innerHTML = " ";
 
     for (var i = 0; i < myTwitter.tweets.length; i++) {
@@ -172,6 +171,10 @@ myTwitter.RedrawTweets = function () {
         tweetsList.innerHTML += "<li>" + myTwitter.tweets[i].message + '<button class="btn btn-default" onclick="myTwitter.Edit(\'' + myTwitter.tweets[i].key + '\')">Edit</button><button class="btn btn-danger" onclick="myTwitter.DeleteTweet(\'' + myTwitter.tweets[i].key + '\')">Delete</button> </li>';
 
     }
+};
+
+myTwitter.Sort = function () {
+
 };
 
 //Edit
@@ -192,7 +195,7 @@ myTwitter.EditTweet = function (key) {
 
     myTwitter.Ajax("PUT", url, myTwitter.RedrawTweets, true, tweet);
 
-    
+    document.getElementById("message").value = " ";
 };
 
     //Edit -- in this method we find the object (tweet) we want to update and place it somewhere so that we can make changes. The update method actually makes the Ajax call.
@@ -256,7 +259,7 @@ myTwitter.GetFriends = function () {
 
     //Callback for GetFriends that displays the people you follow on the page.
 myTwitter.FriendsToArray = function (data) {
-
+    //[url, url, url...
     for (var x in data) {
         myTwitter.FriendsUrl.push(data[x].friendUrl);
     }
@@ -278,15 +281,17 @@ myTwitter.GetFriendProfile = function () {
 //we want to get the friends a friend object into the Friends Objects array
 myTwitter.GetFriendProfileCallBack = function(data){
     myTwitter.FriendObjects.push(data);
-    console.log(myTwitter.FriendObjects);
+    myTwitter.DrawFriends();
 };
 
 //Display
 myTwitter.DrawFriends = function () {
-
+    var friendslist = document.getElementById("friendslist");
+    console.log(myTwitter.FriendObjects);
     for (var i in myTwitter.FriendObjects) {
-        console.log(myTwitter.FriendObjects[i].userName);
+        friendslist.innerHTML += '<li onclick="myTwitter.GetProfile(\''+myTwitter.FriendObjects[i].personalUrl+'\')">' + myTwitter.FriendObjects[i].userName + '</li>';
     }
+
 };
 
 //Read 2 ---- Friends of Friends
@@ -315,4 +320,5 @@ myTwitter.SortFriends = function (friends) { };
 myTwitter.GetProfile(null);
 myTwitter.GetTweets();
 myTwitter.GetFriends();
+
 

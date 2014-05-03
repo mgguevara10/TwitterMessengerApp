@@ -30,6 +30,7 @@
                     <input id="FriendUrl" type="text" class="form-control" placeholder="Add A friend">
                 </div>
                 <button type="button" class="btn btn-default" onclick="myTwitter.followFriend()">Add New Friend</button><!--   Here the person will be able to add friend urls and follow them-->
+                <button type="button" class="btn btn-default" onclick="myTwitter.GetProfile()">My Profile</button>
             </form>
         </div>
     </nav>
@@ -62,15 +63,8 @@
                 </div>
                 <div class="col-md-3">
                     <h3>Friends</h3>
-                    <ul>
-                        <li>First tweet</li>
-                        <li>Second tweet</li>
-                        <li>First tweet</li>
-                        <li>Second tweet</li>
-                        <li>First tweet</li>
-                        <li>First tweet</li>
-                        <li>Second tweet</li>
-                        <li>Second tweet</li>
+                    <ul id="friendslist">
+
                     </ul>
                 </div>
             </section>
