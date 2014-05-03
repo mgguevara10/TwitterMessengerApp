@@ -3,7 +3,7 @@
 var myTwitter = {};
 
 //base url
-myTwitter.db = "https://tuita.firebaseio.com/";
+myTwitter.db = "https://messengermg.firebaseio.com/";
 
 //holds tweets for sorting
 myTwitter.tweets = [];
@@ -12,10 +12,12 @@ myTwitter.tweets = [];
 myTwitter.FriendsUrl = [];
 myTwitter.FriendObjects = [];
 
-//Tweets Constructor
+//Tweets Constructor--- added timeStamp convert
 myTwitter.Tweets = function (message) {
+    var now = new Date();
     this.message    = message;
-    this.time       = Date.now();
+    this.time = now.toDateString() + " " + now.toLocaleTimeString();
+
 };
 
 //Friend Constructor
@@ -163,7 +165,7 @@ myTwitter.fillTweetsArray = function (data) {
 
 myTwitter.RedrawTweets = function () {
     var tweetsList = document.getElementById("tweets");
-    myTwitter.Sort();
+    myTwitter.Sort(function (a, b) { b - a });
     tweetsList.innerHTML = " ";
 
     for (var i = 0; i < myTwitter.tweets.length; i++) {
