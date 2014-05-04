@@ -6,22 +6,7 @@
     <link href="StyleSheet1.css" rel="stylesheet" />
 </head>
 <body>
-    <!--
-        <div class="container">
-        <section>
-            <input type="text" id="nameInput" placeholder="" />
-            <textarea id="biography" placeholder="Bio"></textarea>
-            <input type="text" id="pictureUrl" placeholder="picture url" />
-            <input type="text" id="personalUrl" placeholder="personal url" />
-            <button type="button" id="createProfile" onclick="myTwitter.AddProfile()">Create Profile</button>
-        </section>
 
-        <section>
-            <textarea id="message" placeholder="Tweet something"></textarea>
-            <button class="btn btn-primary" onclick="myTwitter.sendTweet()">Tweet</button>
-        </section>
-    </div>
-    -->
     <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
         <div class="container">
             <a class="navbar-brand" href="#">Twitter Hack</a>
@@ -72,6 +57,32 @@
             
         </div>
     </section>
+    
+        <!-- Modal -->
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        <h4 class="modal-title" id="myModalLabel">Modal title</h4>
+                    </div>
+                    <div class="modal-body">
+                        <img id="profilePic"/>
+                        <p id="biography2">
+
+                        </p>
+                        <h3>Friends</h3>
+                        <ul id="friendsList">
+                            
+                        </ul>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" onclick="myTwitter.ClearModal()"class="btn btn-default" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    
 
     <script src="Scripts/jquery-1.9.0.min.js"></script>
     <script src="Scripts/bootstrap.min.js"></script>
