@@ -11,6 +11,7 @@ myTwitter.FObj = [];
 
 //holds list of our friends
 myTwitter.FriendsUrl = [];
+myTwitter.Friends = [];
 myTwitter.FriendObjects = [];
 myTwitter.Otherstweets = [];
 
@@ -196,15 +197,15 @@ myTwitter.fillOurTweetsArray = function (data) {
 }
 
 myTwitter.RedrawTweets = function () {
-    var tweetsList = document.getElementById("tweets");
+    var tweetsList = document.getElementById("tbody");
     myTwitter.Sort();
     tweetsList.innerHTML = " ";
     
     for (var i = 0; i < myTwitter.tweets.length; i++) {
         if (myTwitter.tweets[i].ours) {
-            tweetsList.innerHTML += "<li>" + myTwitter.tweets[i].message + '<button class="btn btn-default" onclick="myTwitter.Edit(\'' + myTwitter.tweets[i].key + '\')">Edit</button><button class="btn btn-danger" onclick="myTwitter.DeleteTweet(\'' + myTwitter.tweets[i].key + '\')">Delete</button> </li>';
+            tweetsList.innerHTML += "<tr><td>" + myTwitter.tweets[i].message + "</td><td> Me </td><td> " + myTwitter.tweets[i].time.toLocaleString() + '</td><td><button class="btn btn-default" onclick="myTwitter.Edit(\'' + myTwitter.tweets[i].key + '\')">Edit</button></td><td><button class="btn btn-danger" onclick="myTwitter.DeleteTweet(\'' + myTwitter.tweets[i].key + '\')">Delete</button> </td>';
         } else {
-            tweetsList.innerHTML += "<li>" + myTwitter.tweets[i].message + "  /  " + myTwitter.tweets[i].userName + "</li>";
+            tweetsList.innerHTML += "<tr><td>" + myTwitter.tweets[i].message + "</td><td>" + myTwitter.tweets[i].userName + "</td><td>"+ myTwitter.tweets[i].time.toLocaleString() +"</td></tr>";
         }
             
    
@@ -215,9 +216,9 @@ myTwitter.RedrawTweets = function () {
 myTwitter.Sort = function () {
     myTwitter.tweets.sort(function (a, b) {
         if (a.time > b.time)
-            return 1;
-        if (a.time < b.time)
             return -1;
+        if (a.time < b.time)
+            return 1;
         // a must be equal to b
         return 0;
     });
@@ -349,17 +350,30 @@ myTwitter.GetFriendProfileCallBack = function (data) {
     myTwitter.DrawFriends();
 };
 
-
 //Display
 myTwitter.DrawFriends = function () {
     var friendslist = document.getElementById("friendslist");
     friendslist.innerHTML = " ";
+
+    myTwitter.SortFriends();
 
     for (var i in myTwitter.FriendObjects) {
         friendslist.innerHTML += '<li data-toggle="modal" data-target="#myModal" onclick="myTwitter.ViewFriendProfile(\'' + myTwitter.FriendObjects[i].personalUrl + '\')">' + myTwitter.FriendObjects[i].userName + '</li>';
         
     }
 
+};
+
+//Sort the friends array by name
+myTwitter.SortFriends = function () {
+    myTwitter.FriendObjects.sort(function (a, b) {
+        if (a.userName > b.userName)
+            return 1;
+        if (a.userName < b.userName)
+            return -1;
+        // a must be equal to b
+        return 0;
+    });
 };
 
 //ViewFriendProfile
@@ -417,8 +431,7 @@ myTwitter.unfollowFriend = function () {
 
 };
 
-//Sort the friends array by name
-myTwitter.SortFriends = function (friends) { };
+
 
 //------------------------------------------------------------------------------------------
 // We also want to Poll for tweets -I think

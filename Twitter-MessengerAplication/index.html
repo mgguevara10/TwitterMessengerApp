@@ -40,18 +40,36 @@
                     <button type="button" class="btn btn-primary" onclick="myTwitter.sendTweet()">Tweet</button>
                     <button type="button" class="btn btn-primary" id="submitChanges">Submit Changes</button>
                 </div>
-                <div class="col-md-3">
-                    <h3>Tweets</h3>
-                    <ul id="tweets">
-                        <!--  -->
-                    </ul>
-                </div>
-                <div class="col-md-3">
+                <div class="col-md-8">
                     <h3>Friends</h3>
                     <ul id="friendslist">
 
                     </ul>
                 </div>
+            </section>
+            <section>
+                <table class="table table-striped" id="tweets">
+                    <thead>
+                        <tr>
+                            <th>
+                                Tweet
+                            </th>
+                            <th>
+                                User
+                            </th>
+                            <th>
+                                Time
+                            </th>
+                            <th>
+                                Edit
+                            </th>
+                            <th>
+                                Delete
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody id="tbody"></tbody>
+                </table>
             </section>
 
             
