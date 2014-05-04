@@ -82,29 +82,97 @@ myTwitter.GetProfile = function () {
 
 // Callback used in the Get Profile method.  After we get the data we want to display it. this method outlines the how that data will be displayed
 myTwitter.DisplayProfile = function (data) {
+    if (data) {
+        myTwitter.myProfile = data;
+    }
+
     var userName = document.getElementById("userName");
     var biography = document.getElementById("bio");
     var picture = document.getElementById("picture");
     //data { name: "Andre", biography: "student ..............
 
     //TODO finish this method to add all profile information to page
-    userName.innerText = data.userName;
-    biography.innerText = data.biography;
-    picture.setAttribute("src", data.pictureUrl);
+    userName.innerText = myTwitter.myProfile.userName;
+    biography.innerText = myTwitter.myProfile.biography;
+    picture.setAttribute("src", myTwitter.myProfile.pictureUrl);
     picture.setAttribute("height", "400px");
     picture.setAttribute("width", "400px");
 
     
-    myTwitter.GetFriends(null);
+    if (data) {
+        myTwitter.GetFriends(null);
+    }
 
     
 
 };
 
+myTwitter.DisplayProfileAfterFA = function (data) {
+    var userName = document.getElementById("userName");
+    var biography = document.getElementById("bio");
+    var picture = document.getElementById("picture");
+    //data { name: "Andre", biography: "student ..............
+
+    //TODO finish this method to add all profile information to page
+    userName.innerText = myTwitter.myProfile.userName;
+    biography.innerText = myTwitter.myProfile.biography;
+    picture.setAttribute("src", myTwitter.myProfile.pictureUrl);
+    picture.setAttribute("height", "400px");
+    picture.setAttribute("width", "400px");
+
+    //
+    updateProfile.innerText = "Update Profile";
+    updateProfile.setAttribute("onclick", "myTwitter.EditProfile()");
+}
 
 //Update -- Profile
 myTwitter.UpdateProfile = function () {
+    var urls = [];
+    var bio = document.getElementById("updateBio");
+    var pic = document.getElementById("updatePic");
+    var userN = document.getElementById("updateUserName");
 
+    if (bio.value !== "") {
+        myTwitter.myProfile.biography = bio.value
+        urls.push([myTwitter.urlMaker(myTwitter.db, ["Profile/biography"]), bio.value]);
+    }
+
+    if (pic.value !== "")
+    {
+        myTwitter.myProfile.pictureUrl = pic.value;
+        urls.push([myTwitter.urlMaker(myTwitter.db, ["Profile/pictureUrl"]), pic.value]);
+    }
+
+    if (userN.value !== "")
+    {
+        myTwitter.myProfile.userName = userN.value;
+        urls.push([myTwitter.urlMaker(myTwitter.db, ["Profile/userName"]), userN.value]);
+    }
+
+
+    for (var x in urls) {
+
+        var data = JSON.stringify(urls[x][1]);
+
+        myTwitter.Ajax("PUT", urls[x][0], myTwitter.DisplayProfileAfterFA, true, data);
+    }
+    
+      
+    
+    
+};
+
+myTwitter.EditProfile = function () {
+    var userName = document.getElementById("userName");
+    var bio = document.getElementById("bio");
+    var updateProfile = document.getElementById("updateProfile");
+
+    userName.innerHTML = "<input class=\"col-md-12\"type=\"text\" id=\"updateUserName\" placeholder=\"" + myTwitter.myProfile.userName + "\"/>";
+    bio.innerHTML = "<input type=\"text\" id=\"updateBio\" placeholder=\"" + myTwitter.myProfile.biography + "\"/>";
+    bio.innerHTML += "<br/><input type=\"text\" id=\"updatePic\" placeholder=\"" + myTwitter.myProfile.pictureUrl + "\"/>"
+
+    updateProfile.innerText = "Submit Changes";
+    updateProfile.setAttribute("onclick", "myTwitter.UpdateProfile()");
 };
 
 
@@ -397,7 +465,7 @@ myTwitter.DisplayFriendProfile = function (data) {
 
     for (var x in data.Friends) {
 
-        friendsList.innerHTML += "<li>" + data.Friends[x].friendUrl + "</li>";
+        friendsList.innerHTML += "<li>" + myTwitter.getDbname(data.Friends[x].friendUrl) + "</li>";
     }
 
     
@@ -407,10 +475,21 @@ myTwitter.DisplayFriendProfile = function (data) {
 
 };
 
+myTwitter.getDbname = function (str) {
+    str = str.split("");
+    var secondslash = str.indexOf("/") + 2;
+    str.splice(0, secondslash);
 
+
+    var firstdot = str.indexOf(".");
+
+    str.splice(firstdot, str.length);
+
+    str = str.join("");
+    return str;
+};
 //Helper to format the friend string
 //
-
 
 myTwitter.ClearModal = function () {
     document.getElementById("friendsList").innerHTML = " ";
