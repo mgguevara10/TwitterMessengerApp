@@ -21,59 +21,61 @@
     </nav>
     
     <section class="container">
-        <div class="row">
-            <section class="col-md-12">
-                <div class="col-md-3">
-                    <h1 id="userName">Profile Name</h1>
-                    <img id="picture" height="200px" width="150px" src="http://www.clker.com/cliparts/F/S/w/Q/k/K/head-profile-silhouette-male-hi.png" />
-                </div>
-                <div class="col-md-9">
-                    <p id="bio">
-                        \\Biography
-                    </p>
-                </div>
-            </section>
+        <section class="col-md-3">
 
-            <section>
-                <div class="col-md-4">
-                    <textarea class="form-control" rows="3" id="message"></textarea>
-                    <button type="button" class="btn btn-primary" onclick="myTwitter.sendTweet()">Tweet</button>
-                    <button type="button" class="btn btn-primary" id="submitChanges">Submit Changes</button>
-                </div>
-                <div class="col-md-8">
-                    <h3>Friends</h3>
-                    <ul id="friendslist">
 
-                    </ul>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="thumbnail">
+                        <img id="picture" src="http://www.clker.com/cliparts/F/S/w/Q/k/K/head-profile-silhouette-male-hi.png" />
+                        <div class="caption">
+                            <h3 id="userName">Profile Name</h3>
+                            <p id="bio"></p>
+                            <p><button class="btn btn-default">Update Profile</button></p>
+                        </div>
+                    </div>
                 </div>
-            </section>
-            <section>
-                <table class="table table-striped" id="tweets">
-                    <thead>
-                        <tr>
-                            <th>
-                                Tweet
-                            </th>
-                            <th>
-                                User
-                            </th>
-                            <th>
-                                Time
-                            </th>
-                            <th>
-                                Edit
-                            </th>
-                            <th>
-                                Delete
-                            </th>
-                        </tr>
-                    </thead>
-                    <tbody id="tbody"></tbody>
-                </table>
-            </section>
+                
+            </div>
 
+            <div class="col-md-12">
+                <textarea class="form-control" rows="3" id="message"></textarea>
+                <button type="button" class="btn btn-primary" onclick="myTwitter.sendTweet()">Tweet</button>
+                <button type="button" class="btn btn-primary" id="submitChanges">Submit Changes</button>
+            </div>
+
+            <div class="col-md-12">
+                <h3>Friends</h3>
+                <ul id="friendslist"></ul>
+            </div>
+        </section>
+        <section class="col-md-9">
+            <table class="table table-striped" id="tweets">
+                <thead>
+                    <tr>
+                        <th>
+                            Tweet
+                        </th>
+                        <th>
+                            User
+                        </th>
+                        <th>
+                            Time
+                        </th>
+                        <th>
+                            Edit
+                        </th>
+                        <th>
+                            Delete
+                        </th>
+                    </tr>
+                </thead>
+                <tbody id="tbody"></tbody>
+            </table>
+        </section>
+    
             
-        </div>
+        
     </section>
     
         <!-- Modal -->

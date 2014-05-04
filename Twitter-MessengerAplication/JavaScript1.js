@@ -78,9 +78,6 @@ myTwitter.GetProfile = function () {
     myTwitter.Ajax("GET", url, myTwitter.DisplayProfile, true, null);
     
 
-
-    
-
 };
 
 // Callback used in the Get Profile method.  After we get the data we want to display it. this method outlines the how that data will be displayed
@@ -94,6 +91,8 @@ myTwitter.DisplayProfile = function (data) {
     userName.innerText = data.userName;
     biography.innerText = data.biography;
     picture.setAttribute("src", data.pictureUrl);
+    picture.setAttribute("height", "400px");
+    picture.setAttribute("width", "400px");
 
     
     myTwitter.GetFriends(null);
