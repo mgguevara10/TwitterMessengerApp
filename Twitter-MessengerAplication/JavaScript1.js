@@ -15,6 +15,7 @@ myTwitter.Friends = [];
 myTwitter.FriendObjects = [];
 myTwitter.Otherstweets = [];
 myTwitter.FirstGetTweets = [];
+myTwitter.FriendsKeys = [];
 
 //Tweets Constructor
 myTwitter.Tweets = function (message) {
@@ -386,7 +387,10 @@ myTwitter.GetFriends = function (urlparam) {
 //Callback for GetFriends that displays the people you follow on the page.
 myTwitter.FriendsToArray = function (data) {
     //[url, url, url...
+
     for (var x in data) {
+        data[x].key = x;
+        myTwitter.FriendsKeys.push(data[x].key);
         myTwitter.FriendsUrl.push(data[x].friendUrl);
     }
     myTwitter.GetAllTweets();
@@ -396,7 +400,7 @@ myTwitter.FriendsToArray = function (data) {
 //Get request to get the profile data from a given url
 myTwitter.GetFriendProfile = function (key) {
     var url;
-   
+    console.log(myTwitter.FriendsKeys);
     //make urls
     for (var i = 0; i < myTwitter.FriendsUrl.length; i++) {
         url = myTwitter.urlMaker(myTwitter.FriendsUrl[i], ["Profile/"]);
@@ -421,6 +425,7 @@ myTwitter.GetLastFriendProfile = function (key) {
 
 //we want to get the friends a friend object into the Friends Objects array
 myTwitter.GetFriendProfileCallBack = function (data) {
+    
     myTwitter.FriendObjects.push(data);
     myTwitter.DrawFriends();
 };
@@ -431,9 +436,10 @@ myTwitter.DrawFriends = function () {
     friendslist.innerHTML = " ";
 
     myTwitter.SortFriends();
-
+    console.log(myTwitter.FriendObjects);
     for (var i in myTwitter.FriendObjects) {
-        friendslist.innerHTML += '<p data-toggle="modal" data-target="#myModal" onclick="myTwitter.ViewFriendProfile(\'' + myTwitter.FriendObjects[i].personalUrl + '\')">' + myTwitter.FriendObjects[i].userName + '</p> <span class="glyphicon glyphicon-remove"></span>';
+        
+        friendslist.innerHTML += '<p data-toggle="modal" data-target="#myModal" onclick="myTwitter.ViewFriendProfile(\'' + myTwitter.FriendObjects[i].personalUrl + '\')">' + myTwitter.FriendObjects[i].userName + '</p>';
         
     }
 
@@ -527,9 +533,27 @@ myTwitter.FoF = function () {
 };
 
 //Delete  --- unfollow
-myTwitter.unfollowFriend = function () {
+//myTwitter.unfollowFriend = function (url) {
+//    for (var x in myTwitter.FriendsUrl) {
+//        if (url === myTwitter.FriendsUrl[x]) {
+//            var key = myTwitter.FriendsKeys[x];
+//        }
+//    }
 
-};
+//    console.log(key);
+
+//    //var url = myTwitter.urlMaker(myTwitter.db, ["/Profile/Friends/" + key]);
+
+//    //myTwitter.Ajax("DELETE", url, null, true, null);
+
+//    //for (var i = 0; i < myTwitter.tweets.length; i++) {
+//    //    if (myTwitter.tweets[i].key === key) {
+//    //        myTwitter.tweets.splice(i, 1);
+//    //    }
+//    //}
+
+//    //myTwitter.RedrawTweets();
+//};
 
 
 
