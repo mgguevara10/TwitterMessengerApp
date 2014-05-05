@@ -4,74 +4,58 @@
     <title></title>
     <link href="Content/bootstrap.min.css" rel="stylesheet" />
     <link href="StyleSheet1.css" rel="stylesheet" />
+    <link href='http://fonts.googleapis.com/css?family=Special+Elite' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Shadows+Into+Light|Play' rel='stylesheet' type='text/css'>
 </head>
 <body id="body">
 
-    <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+    <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
         <div class="container">
-            <a class="navbar-brand" href="#">Twitter Hack</a>
-            <form class="navbar-form navbar-left" role="search">
+            <a class="navbar-brand logo" href="#">Tuita</a>
+            <form class="navbar-form navbar-right" role="search">
                 <div class="form-group">
                     <input id="FriendUrl" type="text" class="form-control" placeholder="Add A friend">
                 </div>
-                <button type="button" class="btn btn-default" onclick="myTwitter.followFriend()">Add New Friend</button><!--   Here the person will be able to add friend urls and follow them-->
-                <button type="button" class="btn btn-default" onclick="myTwitter.GetProfile()">My Profile</button>
+                <button class="btn btn-default" onclick="myTwitter.followFriend()">Add</button><!--   Here the person will be able to add friend urls and follow them-->
             </form>
         </div>
     </nav>
     
     <section class="container">
-        <section class="col-md-3">
-
-
+        <section class="col-md-3 col-md-push-1">
             <div class="row">
-                <div class="col-md-12">
-                    <div class="thumbnail">
-                        <img id="picture" src="http://www.clker.com/cliparts/F/S/w/Q/k/K/head-profile-silhouette-male-hi.png" />
-                        <div class="caption">
-                            <h3 id="userName">Profile Name</h3>
-                            <p id="bio"></p>
-                            <p><button id="updateProfile" class="btn btn-default" onclick="myTwitter.EditProfile()">Update Profile</button></p>
-                        </div>
+            <div id="profilearea" class="col-md-12">
+                <div class="thumbnail">
+                    <img id="picture" src="http://www.clker.com/cliparts/F/S/w/Q/k/K/head-profile-silhouette-male-hi.png" class="pull-left"/><br/><br/><br/>
+                    <div class="caption">
+                        <h3 id="userName">Profile Name</h3>
+                        <p id="bio"></p>
+                        <p><button id="updateProfile" class="btn btn-default" onclick="myTwitter.EditProfile()">Update Profile</button></p>
                     </div>
                 </div>
-                
-            </div>
-
-            <div class="col-md-12">
-                <textarea class="form-control" rows="3" id="message"></textarea>
+           
+                <textarea class="form-control" rows="1" id="message" placeholder="Compose new tuit..."></textarea><br/>
                 <button type="button" class="btn btn-primary" onclick="myTwitter.sendTweet()">Tweet</button>
                 <button type="button" class="btn btn-primary" id="submitChanges">Submit Changes</button>
+                
             </div>
+            
+            <div class="col-md-11 friends">
+                <h1>Friends</h1>
+                <div id="friendslist">
 
-            <div class="col-md-12">
-                <h3>Friends</h3>
-                <ul id="friendslist"></ul>
+                </div>
             </div>
+          </div>
         </section>
-        <section class="col-md-9">
-            <table class="table table-striped" id="tweets">
-                <thead>
-                    <tr>
-                        <th>
-                            Tweet
-                        </th>
-                        <th>
-                            User
-                        </th>
-                        <th>
-                            Time
-                        </th>
-                        <th>
-                            Edit
-                        </th>
-                        <th>
-                            Delete
-                        </th>
-                    </tr>
-                </thead>
-                <tbody id="tbody"></tbody>
-            </table>
+        <section class="col-md-6 col-md-push-1 tweetlist">
+            <article id="tweets">
+                <h3>Tuits</h3>
+                <hr />
+                <div class="col-md-12" id="tbody">
+
+                </div>
+            </article>
         </section>
     
             
@@ -82,22 +66,24 @@
     <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
+                    <div class="Summary">
+                        <p>Profile Summary</p>
+                    </div>
                     <div class="modal-header">
-                        <h4 class="modal-title" id="myModalLabel">Modal title</h4>
+                        <img height="200px" width="200px" id="profilePic" />
+                        <h3 class="modal-title" id="myModalLabel">Modal title</h3>
+                        <p id="biography2">
+                        </p>
                     </div>
                     <div class="modal-body">
-                        <img id="profilePic"/>
-                        <p id="biography2">
-
-                        </p>
-                        <h3>Friends</h3>
-                        <ul id="friendsList">
+                    
+                        <p id="friendsList">
                             
-                        </ul>
+                        </p>
                         <h3 id="ftweets">Friends Tweets</h3>
-                        <ul id="friendTweets">
+                        <div id="friendTweets">
 
-                        </ul>
+                        </div>
                     </div>
                     <div class="modal-footer">
                         <button type="button" onclick="myTwitter.ClearModal()"class="btn btn-default" data-dismiss="modal">Close</button>

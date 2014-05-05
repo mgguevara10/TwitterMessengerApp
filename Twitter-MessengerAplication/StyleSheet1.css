@@ -1,4 +1,182 @@
 ﻿section.container {
-    padding-top: 100px;
+    padding-top: 80px;
 }
 
+.logo {
+    font-family: 'Special Elite', cursive;
+    font-size: 24px;
+    border-bottom: 4px solid #348bca;
+}
+
+::-webkit-input-placeholder { /* WebKit browsers */
+    font-family: 'Special Elite', cursive;
+}
+:-moz-placeholder { /* Mozilla Firefox 4 to 18 */
+    font-family: 'Special Elite', cursive;
+}
+::-moz-placeholder { /* Mozilla Firefox 19+ */
+    font-family: 'Special Elite', cursive;
+}
+:-ms-input-placeholder { /* Internet Explorer 10+ */
+    font-family: 'Special Elite', cursive;
+}
+
+.thumbnail {
+    padding:40px 0 0 0;
+    background: #348bca;
+    border-radius:5px;
+}
+
+.caption {
+    background-color: white;
+}
+
+#picture {
+    margin: 0 0 0 10px;
+    border: 3px solid white;
+    border-radius:15px;
+}
+
+.tweetbox {
+    background-color: #59c8b7;
+}
+
+#profilearea {
+    margin-bottom: 0;
+}
+
+.friends {
+    margin: 20px 0 0 0;
+    background-color: #f8f5f5;
+    border-radius:5px;
+}
+
+.friends h1 {
+    font-family: 'Shadows Into Light', cursive;
+}
+
+.friends p {
+    font-family: 'Play', sans-serif;
+    font-weight: bold;
+}
+
+.friends p:hover{
+    color: #1769a5;
+}
+
+.tweetlist{
+    border-radius: 5px;
+    background-color: white;
+    border: 1px solid #f3eeee;
+    padding: 0;
+}
+#tweets h3 {
+    font-family: 'Special Elite', cursive;
+    color: #696868;
+}
+
+.tuit {
+    border-bottom: 1px solid #eae3e3;
+    padding: 15px;
+}
+
+.tuit:hover {
+    background-color: #f8f6f6;
+}
+
+.tmess {
+    font-weight: bold;
+    font: 20px;
+}
+
+.tuit h5 {
+    font-family: Corbel;
+    font-weight: bold;
+    color: #808080;
+}
+
+span {
+    margin-left: 15px;
+}
+
+.glyphicon {
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.navbar-default {
+  background-color: white;
+  padding-bottom: 0px;
+  -webkit-box-shadow: 0 8px 6px -6px black;
+	   -moz-box-shadow: 0 8px 6px -6px black;
+	        box-shadow: 0 8px 6px -6px black;
+}
+
+
+body { 
+  background: url(Content/MailwareTwitterClouds.jpg) no-repeat center center fixed; 
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+}
+
+.modal-header {
+    background: #1769a5;
+}
+.modal-header h3{
+    text-align: center;
+    color: #eae3e3;
+}
+
+.modal-header p {
+    text-align: center;
+    color: #eae3e3;
+}
+.modal-header img {
+    display:block;
+    margin:auto;
+    border-radius: 10px;
+    border: 2.5px solid #eae3e3;
+}
+
+#friendsList {
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.FoFlist:hover {
+    cursor: pointer;
+    color: #1769a5;
+}
+
+.FoFTitle {
+    font-weight: bold;
+    font-size: 18px;
+    color: #1769a5;
+}
+
+.Summary p {
+    padding: 5px;
+    text-align: center;
+    font-weight: bold;
+}
+
+input#FriendUrl {
+    border: 5px solid white;
+    background: #808080;
+
+    -moz-border-radius: 20px;
+  -webkit-border-radius: 20px;
+  border-radius: 20px;
+  color: white;
+
+}
+input#FriendUrl:focus {
+    background: #5a5858;
+    color: white;
+}
+
+.Tuitpic{
+    border-radius: 10px;
+}

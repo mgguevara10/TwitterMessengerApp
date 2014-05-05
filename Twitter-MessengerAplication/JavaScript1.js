@@ -14,6 +14,7 @@ myTwitter.FriendsUrl = [];
 myTwitter.Friends = [];
 myTwitter.FriendObjects = [];
 myTwitter.Otherstweets = [];
+myTwitter.FirstGetTweets = [];
 
 //Tweets Constructor
 myTwitter.Tweets = function (message) {
@@ -95,8 +96,8 @@ myTwitter.DisplayProfile = function (data) {
     userName.innerText = myTwitter.myProfile.userName;
     biography.innerText = myTwitter.myProfile.biography;
     picture.setAttribute("src", myTwitter.myProfile.pictureUrl);
-    picture.setAttribute("height", "400px");
-    picture.setAttribute("width", "400px");
+    picture.setAttribute("height", "150px");
+    picture.setAttribute("width", "150px");
 
     
     if (data) {
@@ -162,6 +163,7 @@ myTwitter.UpdateProfile = function () {
     
 };
 
+//Edit Profile
 myTwitter.EditProfile = function () {
     var userName = document.getElementById("userName");
     var bio = document.getElementById("bio");
@@ -227,6 +229,8 @@ myTwitter.GetTweets = function (urlparam) {
 };
 
 myTwitter.GetAllTweets = function () {
+    document.getElementById("tbody").innerHTML = " ";
+    myTwitter.tweets = [];
     var url = myTwitter.urlMaker(myTwitter.db, ["Profile/Tweets"]);
     myTwitter.Ajax("GET", url, myTwitter.fillOurTweetsArray, true, null);
 
@@ -246,10 +250,13 @@ myTwitter.fillTweetsArray = function (data) {
     for (var x in lastObj.Tweets)
     {
         lastObj.Tweets[x].userName = lastObj.userName;
+        lastObj.Tweets[x].pictureUrl = lastObj.pictureUrl;
+        lastObj.Tweets[x].personalUrl = lastObj.personalUrl;
         lastObj.Tweets[x].ours = false;
 
         myTwitter.tweets.push(lastObj.Tweets[x]);
     }
+    myTwitter.FirstGetTweets = myTwitter.tweets;
     
     myTwitter.RedrawTweets();
     
@@ -269,10 +276,11 @@ myTwitter.RedrawTweets = function () {
     tweetsList.innerHTML = " ";
     
     for (var i = 0; i < myTwitter.tweets.length; i++) {
+        var time = new Date(myTwitter.tweets[i].time).toLocaleDateString()
         if (myTwitter.tweets[i].ours) {
-            tweetsList.innerHTML += "<tr><td>" + myTwitter.tweets[i].message + "</td><td> Me </td><td> " + myTwitter.tweets[i].time.toLocaleString() + '</td><td><button class="btn btn-default" onclick="myTwitter.Edit(\'' + myTwitter.tweets[i].key + '\')">Edit</button></td><td><button class="btn btn-danger" onclick="myTwitter.DeleteTweet(\'' + myTwitter.tweets[i].key + '\')">Delete</button> </td>';
+            tweetsList.innerHTML += '<div class="col-md-12 tuit"><div class="col-md-2"><img class="Tuitpic" height="75px" width="75px" src="' + myTwitter.myProfile.pictureUrl + '"></div><div class="col-md-push-1 col-md-8"><h5>@' + myTwitter.myProfile.userName + '</h5><p class="tmess">' + myTwitter.tweets[i].message + "</p><span class=\"pull-right\">" + time + '<span class="glyphicon glyphicon-wrench" onclick="myTwitter.Edit(\'' + myTwitter.tweets[i].key + '\')"></span><span class="glyphicon glyphicon-trash" onclick="myTwitter.DeleteTweet(\'' + myTwitter.tweets[i].key + '\')"></span> </span></div></div>';
         } else {
-            tweetsList.innerHTML += "<tr><td>" + myTwitter.tweets[i].message + "</td><td>" + myTwitter.tweets[i].userName + "</td><td>"+ myTwitter.tweets[i].time.toLocaleString() +"</td></tr>";
+            tweetsList.innerHTML += '<div class="col-md-12 tuit"><div class="col-md-2"><img class="Tuitpic" height="75px" width="75px" src="' + myTwitter.tweets[i].pictureUrl + '"></div><div class="col-md-push-1 col-md-8"> <h5 data-toggle="modal" data-target="#myModal" onclick="myTwitter.ViewFriendProfile(\'' + myTwitter.tweets[i].personalUrl + '\')">@' + myTwitter.tweets[i].userName + '</h5><p class="tmess">' + myTwitter.tweets[i].message + "</p><span class=\"pull-right\">" + time + "</span></div></div>";
         }
             
    
@@ -425,7 +433,7 @@ myTwitter.DrawFriends = function () {
     myTwitter.SortFriends();
 
     for (var i in myTwitter.FriendObjects) {
-        friendslist.innerHTML += '<li data-toggle="modal" data-target="#myModal" onclick="myTwitter.ViewFriendProfile(\'' + myTwitter.FriendObjects[i].personalUrl + '\')">' + myTwitter.FriendObjects[i].userName + '</li>';
+        friendslist.innerHTML += '<p data-toggle="modal" data-target="#myModal" onclick="myTwitter.ViewFriendProfile(\'' + myTwitter.FriendObjects[i].personalUrl + '\')">' + myTwitter.FriendObjects[i].userName + '</p> <span class="glyphicon glyphicon-remove"></span>';
         
     }
 
@@ -462,18 +470,32 @@ myTwitter.DisplayFriendProfile = function (data) {
     name.innerText = data.userName;
     biography.innerText = data.biography;
     profilePic.setAttribute("src", data.pictureUrl);
-
+    
+    friendsList.innerHTML += '<span class="FoFTitle"> Friends List </span>';
     for (var x in data.Friends) {
 
-        friendsList.innerHTML += "<li>" + myTwitter.getDbname(data.Friends[x].friendUrl) + "</li>";
+        friendsList.innerHTML += '<span class="FoFlist" onclick="myTwitter.FOF(\'' + myTwitter.getDbname(data.Friends[x].friendUrl) + '\')" data-dismiss="modal">' + myTwitter.getDbname(data.Friends[x].friendUrl) + "</span>";
     }
 
     
     for (var x in data.Tweets) {
-        friendTweets.innerHTML += "<li>" + data.Tweets[x].message + "</li>";
+        friendTweets.innerHTML += '<div class="tuit">' + data.Tweets[x].message + "</div>";
     }
 
 };
+
+myTwitter.FOF = function (name) {
+    var friendUrl = "https://" + name + ".firebaseio.com/";
+
+    var nowFollowing = new myTwitter.Friend(friendUrl);
+
+    var url = myTwitter.urlMaker(myTwitter.db, ["/Profile/Friends/"]);
+
+    myTwitter.FriendsUrl.push(friendUrl);
+    nowFollowing = JSON.stringify(nowFollowing);
+
+    myTwitter.Ajax("POST", url, myTwitter.GetLastFriendProfile, true, nowFollowing);
+}
 
 myTwitter.getDbname = function (str) {
     str = str.split("");
@@ -519,4 +541,8 @@ myTwitter.unfollowFriend = function () {
 //Update 
 
 myTwitter.GetProfile(null);
+
+document.getElementById("message").onclick = function () {
+    document.getElementById("message").setAttribute("rows", "4");
+};
 
